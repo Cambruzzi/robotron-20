@@ -35,43 +35,57 @@ const pecas = {
         "velocidade": -2
     }
 }
+var cores = ['Amarelo','Azul','Branco','Preto','Rosa','Vermelho']
 
+const seletor = document.querySelectorAll("[data-selecao]")
 
-console.log(estatisticas)
+seletor.forEach(
+    (elemento) => {
+        elemento.addEventListener("click", (evento) => {
+            console.log(evento)
+            buscaRobo(evento.target.dataset.selecao,cores)
+        })
+    }
+)
+
+function buscaRobo (operacao,cores){
+
+    const robo = document.querySelector("[data-robo]")
+
+    var alteracor 
+
+    if(operacao === "-") {
+        var alteracor = cores.shift()
+        robo.src = "img/Robotron 2000 - " + alteracor + "/Robotron 2000 - " + alteracor + ".png"
+        cores.push(alteracor)
+    }else {
+        var alteracor = cores.pop()
+        robo.src = "img/Robotron 2000 - " + alteracor + "/Robotron 2000 - " + alteracor + ".png"
+        cores.unshift(alteracor)
+    }
+}
 
 controle.forEach( (elemento) => {
     elemento.addEventListener("click", (evento) => {
-        montadorPeca(evento.target.dataset.controle, evento.target.parentNode)
-        atualizaEstatisticas (evento.target.dataset.peca)
+        montadorPeca(evento.target.dataset.controle, evento.target.parentNode,evento.target.dataset.peca)
+       
     })
 })
 
 
-function montadorPeca(operacao, controle) {
+function montadorPeca(operacao, controle,atualizador) {
 
     const peca = controle.querySelector("[data-contador]")
     
     if(operacao === "-") {
         peca.value = parseInt(peca.value) - 1
+        estatisticas.forEach( (elemento)=> {
+            elemento.textContent = parseInt(elemento.textContent) - pecas[atualizador][elemento.dataset.estatistica]
+        })
     }else {
         peca.value = parseInt(peca.value) + 1
+        estatisticas.forEach( (elemento)=> {
+            elemento.textContent = parseInt(elemento.textContent) + pecas[atualizador][elemento.dataset.estatistica]
+        })
     }
 }
-
-function atualizaEstatisticas (peca){
-    estatisticas.forEach( (elemento)=> {
-        elemento.textContent = parseInt(elemento.textContent) + pecas[peca][elemento.dataset.estatistica]
-    })
-}
-
-
-
-
-
-function dizOi(nome) {
-    console.log("Oi" + nome)
-    console.log("Bem vindo ao Robotron")
-}
-
-
-dizOi("Leo")

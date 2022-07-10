@@ -35,33 +35,45 @@ const pecas = {
         "velocidade": -2
     }
 }
-var cores = ['Amarelo','Azul','Branco','Preto','Rosa','Vermelho']
+var cores = ['Branco','Amarelo','Azul','Preto','Rosa','Vermelho']
+var alteracor = 0
 
 const seletor = document.querySelectorAll("[data-selecao]")
 
 seletor.forEach(
     (elemento) => {
         elemento.addEventListener("click", (evento) => {
-            console.log(evento)
-            buscaRobo(evento.target.dataset.selecao,cores)
+            buscaRobo(evento.target.dataset.selecao)
         })
     }
 )
 
-function buscaRobo (operacao,cores){
+function ajustaOperador(numero){
+    if(numero < 0 ) {
+        numero = cores.length -1
+    }
+    if (numero > cores.length-1 ){
+        numero = 0
+    }
+
+    return numero
+
+}
+
+function buscaRobo (operacao){
 
     const robo = document.querySelector("[data-robo]")
 
-    var alteracor 
-
     if(operacao === "-") {
-        var alteracor = cores.shift()
-        robo.src = "img/Robotron 2000 - " + alteracor + "/Robotron 2000 - " + alteracor + ".png"
-        cores.push(alteracor)
+        alteracor = ajustaOperador(alteracor -1) 
+        console.log(alteracor)
+        robo.src = "img/Robotron 2000 - " + cores[alteracor] + "/Robotron 2000 - " + cores[alteracor] + ".png"
+        return alteracor
     }else {
-        var alteracor = cores.pop()
-        robo.src = "img/Robotron 2000 - " + alteracor + "/Robotron 2000 - " + alteracor + ".png"
-        cores.unshift(alteracor)
+        alteracor = ajustaOperador(alteracor +1) 
+        console.log(alteracor)
+        robo.src = "img/Robotron 2000 - " + cores[alteracor] + "/Robotron 2000 - " + cores[alteracor] + ".png"
+        return alteracor
     }
 }
 
